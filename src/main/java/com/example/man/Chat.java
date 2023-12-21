@@ -14,9 +14,11 @@ class Chat {
     }
 
     public synchronized void broadcastMessage(String message, ClientHandler sender) {
+        System.out.println("entered : broadcastMessage");
         for (ClientHandler client : clients) {
             if (client != sender) {
                 client.sendMessage(sender.getClientName() + ": " + message);
+
             }
         }
     }

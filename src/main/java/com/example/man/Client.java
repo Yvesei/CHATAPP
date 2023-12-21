@@ -20,48 +20,33 @@ public class Client {
         new Client(args[0]).startClient();
     }
 
-    public void send(String userInput){
-            out.println(userInput);
-    }
+
 
     public void startClient() {
-    try {
-        Socket socket = new Socket("localhost", 5000);
-        // inputs
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
-        out.println(username);
-
-        // listen on uncoming messages and print them
-        new Thread(() -> {
-            try {
-                String serverMessage;
-                while ((serverMessage = in.readLine()) != null) {
-                    System.out.println(serverMessage);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
+//    try {
+//        Socket socket = new Socket("localhost", 5000);
+//        // inputs
+//        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+//        BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
+//        out.println(username);
+//
+//        // listen on uncoming messages and print them
 //        new Thread(() -> {
 //            try {
-//                String userInput;
-//                while ((userInput = consoleInput.readLine()) != null) {
-//                    out.println(userInput);
-//                    System.out.println("msg sent detected");
+//                String serverMessage;
+//                while ((serverMessage = in.readLine()) != null) {
+//                    System.out.println(serverMessage);
 //                }
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
 //        }).start();
-        // listening on user input
-
-
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+//
+//
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
 }
 
 

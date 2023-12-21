@@ -19,11 +19,17 @@ public class LoginController {
     @FXML
     private Button connect;
 
+    private PrintWriter serverOut;
+    public void setServerOut(PrintWriter serverOut) {
+        this.serverOut = serverOut;
+    }
     public void handleConnectButtonClick(ActionEvent event) throws IOException {
         String enteredUsername = username.getText();
         Client c = new Client(enteredUsername);
-        c.startClient();
-        Main.showChatView(c);
+        Main.getInstance().setClient(c);
+        serverOut.println(enteredUsername);
+
+        Main.showChatView(c, Main.getServerOut());
     }
 
 }

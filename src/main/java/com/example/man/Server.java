@@ -14,12 +14,10 @@ class Server {
 
     private void startServer(int port) {
         try {
-
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Server is running on port " + port);
             Chat chat = new Chat();
             while (true) {
-
                 Socket clientSocket = serverSocket.accept();
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -28,16 +26,7 @@ class Server {
                 String username = in.readLine();
                 ClientHandler clientHandler = new ClientHandler(clientSocket, chat, username);
 
-                new Thread(() -> {
-                    try {
-                        String msg;
-                        while ((msg = in.readLine()) != null) {
-                            System.out.println(msg);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+
 
                 new Thread(clientHandler).start();
 
