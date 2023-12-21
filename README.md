@@ -11,3 +11,5 @@ What we need:
 
 ### Socket
 - [ ] socket to arrive at the server
+- [ ] list clients
+- [ ] render onclick on clients
