@@ -2,6 +2,7 @@ package com.example.man;
 import com.example.man.DB.DAO.entities.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -34,13 +35,13 @@ public class chatController implements MessageCallback{
     public void initializeUserLabels() {
         for (com.example.man.DB.DAO.entities.client c:availableClients){
             Label userLabel = new Label(c.getName());
+            usersList.setMargin(userLabel, new Insets(5, 0, 5, 0));
             // Set other properties as needed
             userLabel.setOnMouseClicked(event -> handleUserClick(userLabel)); // Attach click event
             usersList.getChildren().add(userLabel); // Append label to VBox
         }
 
     }
-
     // Handle label click events
     private static void handleUserClick(Label clickedLabel) {
         String username = clickedLabel.getText();
@@ -49,7 +50,7 @@ public class chatController implements MessageCallback{
     }
     @Override
     public void onMessageReceived(String message) {
-        showMessage(message);
+        showMessage(message, false);
     }
 
     public void setServerOut(PrintWriter serverOut) {
@@ -65,18 +66,16 @@ public class chatController implements MessageCallback{
     }
     @FXML
     public void onEnterPressed(ActionEvent ae) {
-        System.out.println("dkhl l 0");
         String enteredMessage =  messageInput.getText().trim();
-        System.out.println("dkhl l 1");
-
         if (!enteredMessage.isEmpty()) {
-            System.out.println("here!!!");
             Main.getServerOut().println(enteredMessage);
-            showMessage(this.client.getName() + ": " +enteredMessage);
+            showMessage(this.client.getName() + ": " +enteredMessage, true);
         }
     }
-    public void showMessage(String enteredMessage){
+    public void showMessage(String enteredMessage, Boolean isSent){
         Label newLabel = new Label(enteredMessage);
+        newLabel.getStyleClass().add(isSent ? "sent" : "received");
+        VBox.setMargin(newLabel, new Insets(5, 0, 5, 0));
         messageContainer.getChildren().add(newLabel);
         // Clear the input field after adding the message
         messageInput.clear();

@@ -80,9 +80,8 @@ public class Main extends Application {
                     while ((serverMessage = in.readLine()) != null) {
                         System.out.println(serverMessage);
                         final String finalServerMessage = serverMessage;
-
                         Platform.runLater(() -> {
-                            controllerInstance.showMessage(finalServerMessage);
+                            controllerInstance.showMessage(finalServerMessage, false);
                         });
                         System.out.println(serverMessage);
                     }
