@@ -1,0 +1,17 @@
+.sent {
+    -fx-background-color: lightblue;
+    -fx-padding: 5px;
+    -fx-border-radius: 50px;
+    -fx-alignment: center-right;
+}
+
+.received {
+    -fx-background-color: white;
+    -fx-padding: 5px;
+    -fx-border-radius: 5px;
+    -fx-alignment: center-left;
+}
+
+#messageContainer {
+    /* Add any general styling for the message container if needed */
+}
