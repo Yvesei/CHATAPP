@@ -1,5 +1,6 @@
 package com.example.man;
 
+import com.example.man.DB.DAO.entities.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,7 +26,7 @@ public class LoginController {
     }
     public void handleConnectButtonClick(ActionEvent event) throws IOException {
         String enteredUsername = username.getText();
-        Client c = new Client(enteredUsername);
+        client c = new client(enteredUsername);
         Main.getInstance().setClient(c);
         serverOut.println(enteredUsername);
 
