@@ -18,7 +18,6 @@ class Chat {
         for (ClientHandler client : clients) {
             if (client != sender) {
                 client.sendMessage(sender.getClientName() + ": " + message);
-
             }
         }
     }
@@ -26,11 +25,12 @@ class Chat {
     public synchronized void sendPrivateMessage(String message, ClientHandler sender, String recipientName) {
         for (ClientHandler client : clients) {
             if (client.getClientName().equals(recipientName)) {
-                client.sendMessage("(Private) " + sender.getClientName() + ": " + message);
+                // here
+                // write the message to DB
+                client.sendMessage( sender.getClientName() + ": " + message);
                 return;
             }
         }
-        sender.sendMessage("User '" + recipientName + "' not found.");
     }
 
     public synchronized void listConnectedClients(ClientHandler sender) {

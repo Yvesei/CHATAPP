@@ -54,7 +54,6 @@ public class Main extends Application {
         try {
             System.out.println("entered in try main");
             Socket socket = new Socket("localhost", 5000);
-
             // inputs
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -102,7 +101,6 @@ public class Main extends Application {
 
     }
 
-    // Load and show the login view
     public static void showLoginView( PrintWriter serverOut) {
 
         try {
@@ -118,7 +116,6 @@ public class Main extends Application {
         }
     }
 
-    // Load and show the chat view
     public static void showChatView(client user, PrintWriter serverOut) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("chat-view.fxml"));

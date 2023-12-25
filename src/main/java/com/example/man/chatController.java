@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import java.io.PrintWriter;
 import java.util.List;
+import com.example.man.DB.DAO.ClientDaoImplemantation;
 
 public class chatController implements MessageCallback{
     @FXML
@@ -18,7 +19,16 @@ public class chatController implements MessageCallback{
     private  VBox messageContainer;
     private client client ;
 
+    private client clickedClient;
     private PrintWriter serverOut;
+
+    public client getClickedClient() {
+        return clickedClient;
+    }
+
+    public void setClickedClient(client clickedClient) {
+        this.clickedClient = clickedClient;
+    }
 
     @FXML
     private VBox usersList;
@@ -34,18 +44,24 @@ public class chatController implements MessageCallback{
     // Method to initialize labels for users and add them to the VBox
     public void initializeUserLabels() {
         for (com.example.man.DB.DAO.entities.client c:availableClients){
+            if (!c.getName().equals(client.getName())){
             Label userLabel = new Label(c.getName());
             usersList.setMargin(userLabel, new Insets(5, 0, 5, 0));
             // Set other properties as needed
             userLabel.setOnMouseClicked(event -> handleUserClick(userLabel)); // Attach click event
             usersList.getChildren().add(userLabel); // Append label to VBox
+            }
         }
 
     }
     // Handle label click events
-    private static void handleUserClick(Label clickedLabel) {
+    private void handleUserClick(Label clickedLabel) {
         String username = clickedLabel.getText();
-        System.out.println("Clicked on User: " + username);
+        for (client user:availableClients){
+            if (user.getName().equals(username)){
+                this.clickedClient = user ;
+            }
+        }
         // Add further handling as needed
     }
     @Override
@@ -68,7 +84,7 @@ public class chatController implements MessageCallback{
     public void onEnterPressed(ActionEvent ae) {
         String enteredMessage =  messageInput.getText().trim();
         if (!enteredMessage.isEmpty()) {
-            Main.getServerOut().println(enteredMessage);
+            Main.getServerOut().println(clickedClient.getName() + " " + enteredMessage);
             showMessage(this.client.getName() + ": " +enteredMessage, true);
         }
     }
