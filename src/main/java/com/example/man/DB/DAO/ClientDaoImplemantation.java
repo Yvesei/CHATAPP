@@ -45,6 +45,7 @@ public class ClientDaoImplemantation implements Client_InterfaceDAO{
             if(resultSet.next()){
                 client=new client();
                 client.setName(resultSet.getString("Name"));
+                client.setID_client(resultSet.getInt("ID_client"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

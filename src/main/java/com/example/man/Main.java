@@ -82,7 +82,6 @@ public class Main extends Application {
                         Platform.runLater(() -> {
                             controllerInstance.showMessage(finalServerMessage, false);
                         });
-                        System.out.println(serverMessage);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

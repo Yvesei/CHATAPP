@@ -1,5 +1,10 @@
 package com.example.man;
 
+
+import com.example.man.DB.DAO.entities.Message;
+import javafx.application.Platform;
+import com.example.man.DB.DAO.entities.client;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -8,30 +13,19 @@ class ClientHandler implements Runnable {
     private final Chat chat;
     private PrintWriter out;
     private BufferedReader in;
-    private String clientName;
-    private MessageCallback messageCallback;
+    private client client;
 
+    private String ClientName;
 
-    public void setMessageCallback(MessageCallback callback) {
-        this.messageCallback = callback;
-    }
-
-    public MessageCallback getMessageCallback() {
-        return messageCallback;
-    }
-
-    public ClientHandler(Socket clientSocket, Chat chat, String username) {
+    public ClientHandler(Socket clientSocket, Chat chat, client user) {
         System.out.println("ClientHandler constructor entered");
         this.clientSocket = clientSocket;
         this.chat = chat;
-        this.clientName = username;
+        this.client = user;
 
     }
     public void sendMessage(String message) {
         out.println(message);
-    }
-    public String getClientName() {
-        return clientName;
     }
 
     @Override
@@ -39,20 +33,32 @@ class ClientHandler implements Runnable {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out.println("Client connected : " + clientName + "!");
+            out.println("Client connected : " + this.client.getName() + "!");
             chat.addClient(this);
-            System.out.println("entered run in clientHandler");
 
-            String message;
-            // listens on messages coming from client socket
-            while ((message = in.readLine()) != null) {
-                    String[] parts = message.split(" ", 2);
-                    chat.sendPrivateMessage(parts[1], this, parts[0]);
-//
-            }
+
+            new Thread(() -> {
+                try {
+                    String message;
+                    // listens on messages coming from client socket
+                    while ((message = in.readLine()) != null) {
+                        String[] parts = message.split(" ", 2);
+                        Message msg = new Message();
+                        chat.sendPrivateMessage(parts[1], this.client);
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 }
+
+    public String getClientName() {
+        return ClientName;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.man;
 
+import com.example.man.DB.DAO.ClientDaoImplemantation;
 import com.example.man.DB.DAO.entities.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ public class LoginController {
     private TextField username;
     @FXML
     private Button connect;
+    private ClientDaoImplemantation daoClient = new ClientDaoImplemantation();
 
     private PrintWriter serverOut;
     public void setServerOut(PrintWriter serverOut) {
@@ -26,10 +28,10 @@ public class LoginController {
     }
     public void handleConnectButtonClick(ActionEvent event) throws IOException {
         String enteredUsername = username.getText();
-        client c = new client(enteredUsername);
+        client c = daoClient.getByUserName(enteredUsername);
+        System.out.println("[New] client created  : "+c.getID_client());
         Main.getInstance().setClient(c);
         serverOut.println(enteredUsername);
-
         Main.showChatView(c, Main.getServerOut());
     }
 

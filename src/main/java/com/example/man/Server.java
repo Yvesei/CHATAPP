@@ -1,5 +1,7 @@
 package com.example.man;
 
+import com.example.man.DB.DAO.entities.client;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +26,8 @@ class Server {
                 BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
                 System.out.println("New client connected: " + clientSocket);
                 String username = in.readLine();
-                ClientHandler clientHandler = new ClientHandler(clientSocket, chat, username);
+                client user = new client(username);
+                ClientHandler clientHandler = new ClientHandler(clientSocket, chat, user);
 
 
 
