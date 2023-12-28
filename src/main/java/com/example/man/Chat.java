@@ -8,7 +8,7 @@ import com.example.man.DB.DAO.entities.client;
 
 
 class Chat {
-    private final HashSet<ClientHandler> clients = new HashSet<>();
+    private static final HashSet<ClientHandler> clients = new HashSet<>();
     private MessageDAOImplementation dao = new MessageDAOImplementation();
 
 
@@ -24,18 +24,16 @@ class Chat {
         System.out.println("entered : broadcastMessage");
         for (ClientHandler client : clients) {
             if (client != sender) {
-                client.sendMessage(sender.getClientName() + ": " + message);
+                client.sendMessage(sender.getClient().getName() + ": " + message);
             }
         }
     }
 
-    public synchronized void sendPrivateMessage(String message, client sender) {
-        for (ClientHandler client : clients) {
-            if (client.getClientName().equals(sender.getName())) {
+    public synchronized void sendPrivateMessage(String message, client sender, String reciever) {
+        for (ClientHandler client:clients) {
+            if (client.getClient().getName().equals(reciever)) {
                 // needs modification
-//                Message msg = new Message(sender.getID_client(),2,message);
-//                dao.save(msg);
-                client.sendMessage( sender.getName() + ": " + message);
+                client.sendMessage( reciever + " " + sender.getName() + " " + message);
                 return;
             }
         }

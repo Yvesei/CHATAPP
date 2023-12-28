@@ -8,10 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.example.man.DB.DAO.ClientDaoImplemantation;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
@@ -58,10 +56,9 @@ public class Main extends Application {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
-            showLoginView(out);
+            ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
+            showLoginView(objectOutput);
 
-//            out.println(client.getUsername());
-            // listen on uncoming messages and print them
             new Thread(() -> {
                 try {
                     String serverMessage;
@@ -80,7 +77,7 @@ public class Main extends Application {
                         System.out.println(serverMessage);
                         final String finalServerMessage = serverMessage;
                         Platform.runLater(() -> {
-                            controllerInstance.showMessage(finalServerMessage, false);
+                            controllerInstance.showMessageReceived(finalServerMessage, false);
                         });
                     }
                 } catch (IOException e) {
@@ -100,13 +97,13 @@ public class Main extends Application {
 
     }
 
-    public static void showLoginView( PrintWriter serverOut) {
+    public static void showLoginView( ObjectOutputStream serverOut) {
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
             Parent root = (Parent)fxmlLoader.load();
             LoginController controller = fxmlLoader.<LoginController>getController();
-            controller.setServerOut(serverOut);
+            controller.setObjectOutput(serverOut);
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle("Login View");
             primaryStage.show();

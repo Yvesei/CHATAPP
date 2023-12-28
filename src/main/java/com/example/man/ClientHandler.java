@@ -15,7 +15,25 @@ class ClientHandler implements Runnable {
     private BufferedReader in;
     private client client;
 
-    private String ClientName;
+    public Socket getClientSocket() {
+        return clientSocket;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public PrintWriter getOut() {
+        return out;
+    }
+
+    public BufferedReader getIn() {
+        return in;
+    }
+
+    public com.example.man.DB.DAO.entities.client getClient() {
+        return client;
+    }
 
     public ClientHandler(Socket clientSocket, Chat chat, client user) {
         System.out.println("ClientHandler constructor entered");
@@ -36,16 +54,16 @@ class ClientHandler implements Runnable {
             out.println("Client connected : " + this.client.getName() + "!");
             chat.addClient(this);
 
-
             new Thread(() -> {
                 try {
                     String message;
                     // listens on messages coming from client socket
                     while ((message = in.readLine()) != null) {
+                        System.out.println("[clientHandler1] msg recived : " + message );
                         String[] parts = message.split(" ", 2);
                         Message msg = new Message();
-                        chat.sendPrivateMessage(parts[1], this.client);
-
+                        System.out.println("[clientHandler2] : this.client.getName() " + this.client.getName() + " | id: " + this.client.getID_client());
+                        chat.sendPrivateMessage(parts[1], this.client, parts[0]);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -58,7 +76,4 @@ class ClientHandler implements Runnable {
         }
 }
 
-    public String getClientName() {
-        return ClientName;
-    }
 }

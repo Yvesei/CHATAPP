@@ -9,6 +9,11 @@ public class client implements Serializable {
     public client() {
     }
 
+    public client(int ID_client, String name) {
+        this.ID_client = ID_client;
+        Name = name;
+    }
+
     public client(String name) {
         Name = name;
     }

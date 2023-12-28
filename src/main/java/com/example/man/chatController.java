@@ -64,13 +64,12 @@ public class chatController implements MessageCallback{
             }
         }
     }
-    // Handle label click events
     private void handleUserClick(Label clickedLabel) {
         String username = clickedLabel.getText();
         for (client user:availableClients){
             if (user.getName().equals(username)){
                 this.setClickedClient(user);
-                System.out.println("client.getID_client : "+  client.getID_client() +" "+  "clickedClient.getID_client :" + clickedClient.getID_client());
+                System.out.println("client.getID_client : "+  client.getID_client() + " "+  "clickedClient.getID_client :  " + clickedClient.getID_client());
                 this.chatId = dao.getChatIdByUserIds(client.getID_client(), clickedClient.getID_client());
                 System.out.println("chat clicked : " + chatId);
                 this.renderChat(this.chatId);
@@ -80,10 +79,8 @@ public class chatController implements MessageCallback{
     }
     private void renderChat(int chatId){
         messageContainer.getChildren().clear();
-
         List<Message> messages = daoMessage.getMessagesByChatId(chatId);
         for (Message message : messages) {
-            System.out.println(message.getContent());
             boolean sentByCurrentUser = (message.getSenderId() == client.getID_client());
             showMessage(message.getContent(), sentByCurrentUser);
         }
@@ -97,8 +94,12 @@ public class chatController implements MessageCallback{
     @FXML
     public void onEnterPressed(ActionEvent ae) {
         String enteredMessage =  messageInput.getText().trim();
+
         if (!enteredMessage.isEmpty()) {
+            Message msg = new Message(this.client.getID_client(),this.chatId,enteredMessage);
+            daoMessage.save(msg);
             Main.getServerOut().println(clickedClient.getName() + " " + enteredMessage);
+            // sends it to client handler
             showMessage(this.client.getName() + ": " +enteredMessage, true);
         }
     }
@@ -112,5 +113,21 @@ public class chatController implements MessageCallback{
         // Scroll to the bottom to show the latest message
 //        ScrollPane scrollPane = (ScrollPane) messageContainer.getParent().getParent();
 //        scrollPane.setVvalue(1.0);
+    }
+
+    public void showMessageReceived(String enteredMessage, Boolean isSent){
+        System.out.println("[chatController] (whole message : )" + enteredMessage);
+        String[] parts = enteredMessage.split(" ", 3);
+        if(this.client.getName().equals(parts[0])) {
+            Label newLabel = new Label(parts[2]);
+            newLabel.getStyleClass().add(isSent ? "sent" : "received");
+            VBox.setMargin(newLabel, new Insets(5, 0, 5, 0));
+            messageContainer.getChildren().add(newLabel);
+            // Clear the input field after adding the message
+            messageInput.clear();
+            // Scroll to the bottom to show the latest message
+//        ScrollPane scrollPane = (ScrollPane) messageContainer.getParent().getParent();
+//        scrollPane.setVvalue(1.0);
+        }
     }
 }
