@@ -74,6 +74,7 @@ public class Main extends Application {
                 try {
                     String serverMessage;
                     while ((serverMessage = in.readLine()) != null) {
+                        System.out.println("[Main] (msg Received from server) :  "  + serverMessage);
                         System.out.println(serverMessage);
                         final String finalServerMessage = serverMessage;
                         Platform.runLater(() -> {

@@ -40,9 +40,9 @@ class ClientHandler implements Runnable {
         this.clientSocket = clientSocket;
         this.chat = chat;
         this.client = user;
-
     }
-    public void sendMessage(String message) {
+    public void sendMessage(String message){
+        System.out.println("[clientHandler] of : " + client.getName() +" sending message : " + message );
         out.println(message);
     }
 
@@ -51,7 +51,6 @@ class ClientHandler implements Runnable {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out.println("Client connected : " + this.client.getName() + "!");
             chat.addClient(this);
 
             new Thread(() -> {
@@ -59,10 +58,9 @@ class ClientHandler implements Runnable {
                     String message;
                     // listens on messages coming from client socket
                     while ((message = in.readLine()) != null) {
-                        System.out.println("[clientHandler1] msg recived : " + message );
+                        System.out.println("[clientHandler1] msg received : " + message + " by : " + this.client.getName() );
                         String[] parts = message.split(" ", 2);
                         Message msg = new Message();
-                        System.out.println("[clientHandler2] : this.client.getName() " + this.client.getName() + " | id: " + this.client.getID_client());
                         chat.sendPrivateMessage(parts[1], this.client, parts[0]);
                     }
                 } catch (IOException e) {

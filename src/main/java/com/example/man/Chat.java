@@ -30,6 +30,7 @@ class Chat {
     }
 
     public synchronized void sendPrivateMessage(String message, client sender, String reciever) {
+        System.out.println("[Chat:sendPrivateMessage] message : " + message);
         for (ClientHandler client:clients) {
             if (client.getClient().getName().equals(reciever)) {
                 // needs modification

@@ -29,7 +29,7 @@ public class LoginController {
         System.out.println("[New] client created  : "+ c.getID_client());
         Main.getInstance().setClient(c);
         objectOutput.writeObject(c);
-        objectOutput.flush();
+//        objectOutput.flush();
         Main.showChatView(c, Main.getServerOut());
     }
 

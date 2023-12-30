@@ -15,3 +15,51 @@
 #messageContainer {
     /* Add any general styling for the message container if needed */
 }
+.counter-label {
+    -fx-background-color: red;
+    -fx-border-radius: 50%;
+    -fx-padding: 2px 5px;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+.user-box{
+    -fx-padding: 2 2 4 6;
+}
+.user-con{
+    -fx-padding: 2 2 2 6 ;
+}
+.user-name {
+    -fx-label-padding: 4 2 0 2 ;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.user-message {
+    -fx-label-padding: 2 2 2 2 ;
+    -fx-font-size: 12px;
+    -fx-text-fill: #00000072;
+}
+
+.notification-circle {
+    -fx-fill: dodgerblue;
+    -fx-stroke: black;
+}
+
+/* Add more styling as needed */
+
+.users-container{
+
+}
+.user{
+    -fx-color-label-visible: white;
+}
+#usersList{
+    -fx-padding: 4 4 4 6        ;
+}
+
+/*.hidden{*/
+/*    visibility: hidden;*/
+/*}*/
+/*show{*/
+/*    visibility: true !important;*/
+/*}*/
