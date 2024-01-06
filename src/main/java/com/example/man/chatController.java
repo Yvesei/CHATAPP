@@ -8,6 +8,7 @@ import com.example.man.DB.DAO.entities.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -24,11 +25,11 @@ import javafx.scene.shape.Circle;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class chatController implements MessageCallback{
+public class chatController implements MessageCallback {
     @FXML
-    private  TextField messageInput;
+    private TextField messageInput;
     @FXML
-    private  VBox messageContainer;
+    private VBox messageContainer;
     @FXML
     private VBox usersList;
     @FXML
@@ -41,7 +42,7 @@ public class chatController implements MessageCallback{
     private Label clickedUserName;
     @FXML
     private ImageView clickedUserImage;
-    private client client ;
+    private client client;
     private int chatId;
     private ChatDAOImplemetation dao = new ChatDAOImplemetation();
     private ClientDaoImplemantation daoClient = new ClientDaoImplemantation();
@@ -53,18 +54,20 @@ public class chatController implements MessageCallback{
     public client getClickedClient() {
         return clickedClient;
     }
+
     public void setClickedClient(client clickedClient) {
         this.clickedClient = clickedClient;
     }
+
     public void setServerOut(PrintWriter serverOut) {
         this.serverOut = serverOut;
     }
 
-    public void setUsername(client user){
+    public void setUsername(client user) {
         this.client = user;
     }
 
-    public void showusername(){
+    public void showusername() {
         System.out.println(this.client.getName());
     }
 
@@ -73,18 +76,7 @@ public class chatController implements MessageCallback{
     }
 
     // mehtods *****************************************************************************************************
-//    public void initializeUserLabels() {
-//        for (com.example.man.DB.DAO.entities.client c:availableClients){
-//            if (!c.getName().equals(client.getName())){
-//            Label userLabel = new Label(c.getName());
-//            usersList.setMargin(userLabel, new Insets(5, 0, 5, 0));
-//            usersList.getStyleClass().add("users-container");
-//            userLabel.getStyleClass().add("user");
-//            userLabel.setOnMouseClicked(event -> handleUserClick(userLabel)); // Attach click event
-//            usersList.getChildren().add(userLabel); // Append label to VBox
-//            }
-//        }
-//    }
+
 
     public void initializeUserLabels() {
         LogedinUserName.setText(this.client.getName());
@@ -120,11 +112,20 @@ public class chatController implements MessageCallback{
         nameLabel.getStyleClass().add("user-name");
         // here we will get a new
         // Label for user message
-        Label messageLabel = new Label("You: asahbdbsad");
-        messageLabel.getStyleClass().add("user-message");
+        List<Message> lastMessageList = daoMessage.getMessagesByChatId(dao.getChatIdByUserIds(client.getID_client(),user.getID_client()));
+        if(!lastMessageList.isEmpty()) {
 
-        userDetails.getChildren().addAll(nameLabel, messageLabel);
+            Message lastMessage = lastMessageList.get(lastMessageList.size() - 1);
 
+            Label messageLabel = new Label( lastMessage.getSenderId() == client.getID_client()?  "you: "+lastMessage.getContent() :lastMessage.getContent() );
+            messageLabel.getStyleClass().add("user-message");
+
+            userDetails.getChildren().addAll(nameLabel, messageLabel);
+        }else {
+            Label messageLabel = new Label("");
+            messageLabel.getStyleClass().add("user-message");
+            userDetails.getChildren().addAll(nameLabel, messageLabel);
+        }
         // Circle for notification
         Circle notificationCircle = new Circle(9.0, Color.DODGERBLUE);
         notificationCircle.setStroke(Color.BLACK);
@@ -143,10 +144,10 @@ public class chatController implements MessageCallback{
 
     private void handleUserClick(String username) {
         showNotification(username, false);
-        for (client user:availableClients){
-            if (user.getName().equals(username)){
+        for (client user : availableClients) {
+            if (user.getName().equals(username)) {
                 this.setClickedClient(user);
-                System.out.println("[chatController ] (clicked client is : )" + this.clickedClient.getName() );
+                System.out.println("[chatController ] (clicked client is : )" + this.clickedClient.getName());
                 this.clickedUserName.setText(username);
                 // might need to set the user image after
                 this.chatId = dao.getChatIdByUserIds(client.getID_client(), clickedClient.getID_client());
@@ -155,47 +156,60 @@ public class chatController implements MessageCallback{
         }
         // Add further handling as needed
     }
-    private void renderChat(int chatId){
+
+    private void renderChat(int chatId) {
         messageContainer.getChildren().clear();
         List<Message> messages = daoMessage.getMessagesByChatId(chatId);
         for (Message message : messages) {
             boolean sentByCurrentUser = (message.getSenderId() == client.getID_client());
             showMessage(message.getContent(), sentByCurrentUser);
         }
-
-
     }
+
     @Override
     public void onMessageReceived(String message) {
         showMessage(message, false);
     }
+
     @FXML
     public void onEnterPressed(ActionEvent ae) {
-        String enteredMessage =  messageInput.getText().trim();
-        System.out.println("[message sent] - to : " + clickedClient.getName() +" | " + "content :" + enteredMessage );
+        String enteredMessage = messageInput.getText().trim();
+        System.out.println("[message sent] - to : " + clickedClient.getName() + " | " + "content :" + enteredMessage);
         if (!enteredMessage.isEmpty()) {
-            Message msg = new Message(this.client.getID_client(),this.chatId,enteredMessage);
+            Message msg = new Message(this.client.getID_client(), this.chatId, enteredMessage);
             daoMessage.save(msg);
             Main.getServerOut().println(clickedClient.getName() + " " + enteredMessage);
             // sends it to client handler
             showMessage(enteredMessage, true);
         }
     }
-    public void showMessage(String enteredMessage, Boolean isSent){
+
+    public void showMessage(String enteredMessage, Boolean isSent) {
         Label newLabel = new Label(enteredMessage);
         newLabel.getStyleClass().add(isSent ? "sent" : "received");
         VBox.setMargin(newLabel, new Insets(5, 0, 5, 0));
-        messageContainer.getChildren().add(newLabel);
+        HBox messageBox = new HBox();
+        messageBox.getChildren().add(newLabel);
+
+        // Set alignment based on message type
+        if (isSent) {
+            messageBox.setAlignment(Pos.CENTER_RIGHT);
+        } else {
+            messageBox.setAlignment(Pos.CENTER_LEFT);
+        }
+
+        messageContainer.getChildren().add(messageBox);
         // Clear the input field after adding the message
         messageInput.clear();
         // Scroll to the bottom to show the latest message
 //        ScrollPane scrollPane = (ScrollPane) messageContainer.getParent().getParent();
 //        scrollPane.setVvalue(1.0);
     }
-    public void showMessageReceived(String enteredMessage, Boolean isSent){
-        System.out.println("[chatController] showMessageReceived() : enteredMessage : " + enteredMessage );
+
+    public void showMessageReceived(String enteredMessage, Boolean isSent) {
+        System.out.println("[chatController] showMessageReceived() : enteredMessage : " + enteredMessage);
         String[] parts = enteredMessage.split(" ", 3);
-        if (this.clickedClient.getName() !=null) {
+        if (this.clickedClient.getName() != null) {
             if (this.client.getName().equals(parts[0]) && this.clickedClient.getName().equals(parts[1])) {
                 Label newLabel = new Label(parts[2]);
                 newLabel.getStyleClass().add(isSent ? "sent" : "received");
@@ -209,10 +223,11 @@ public class chatController implements MessageCallback{
             } else if (this.client.getName().equals(parts[0]) && !this.clickedClient.getName().equals(parts[1])) {
                 this.showNotification(parts[1], true);
             }
-        }else{
+        } else {
             this.showNotification(parts[1], true);
         }
     }
+
     private void showNotification(String username, boolean show) {
         System.out.println("enetered in show notification!!!!");
 
@@ -222,7 +237,7 @@ public class chatController implements MessageCallback{
 
                 // Find the user name label within the user box
                 Label nameLabel = findUserNameLabel(userBox);
-                String usernameLabel =  nameLabel.getText();
+                String usernameLabel = nameLabel.getText();
                 // Check if the label has the style class "user-name"
                 if (nameLabel != null && usernameLabel.equals(username)) {
                     this.shownotif(userBox, show);
@@ -230,7 +245,8 @@ public class chatController implements MessageCallback{
             }
         }
     }
-    private void shownotif(HBox userBox, boolean show){
+
+    private void shownotif(HBox userBox, boolean show) {
         StackPane notificationStack = (StackPane) userBox.lookup(".notificationStack");
         Label notificationAllert = (Label) userBox.lookup(".notification-label");
         notificationAllert.setText("1");
@@ -250,22 +266,6 @@ public class chatController implements MessageCallback{
                         return (Label) innerNode;
                     }
                 }
-            }
-        }
-
-        return null;
-    }
-
-    // Helper method to find the notification circle within a user box
-
-
-    // Helper method to find the label within the notification circle
-    private Label findNotificationLabel(Circle notificationCircle) {
-        System.out.println("enetered in show findNotificationLabel!!!!");
-
-        for (Node node : ((StackPane) notificationCircle.getParent()).getChildren()) {
-            if (node instanceof Label && node.getStyleClass().contains("notification-label")) {
-                return (Label) node;
             }
         }
 

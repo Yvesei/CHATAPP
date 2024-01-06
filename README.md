@@ -6,6 +6,6 @@ what needs to be done :
 - [x] when receiving msg check where to put it.
 - [ ] instead of String:msg it should be the class
 - [ ] file transfer over socket
-- [ ] style needs some work
-- [ ] images for clients
-- [ ] messages style
+- [x] style needs some work
+- [-] images for clients
+- [x] messages style

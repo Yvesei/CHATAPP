@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
@@ -8,39 +9,43 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="544.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.man.chatController">
+<AnchorPane prefHeight="566.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.man.chatController">
     <stylesheets>
         <URL value="@styles.css" />
     </stylesheets>
     <children>
-        <SplitPane dividerPositions="0.29797979797979796" layoutY="5.0" prefHeight="538.0" prefWidth="747.0">
+        <SplitPane dividerPositions="0.29797979797979796" layoutY="5.0" prefHeight="566.0" prefWidth="790.0">
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ScrollPane layoutX="-7.0" layoutY="60.0" prefHeight="475.0" prefWidth="226.0">
+                  <ScrollPane layoutX="4.0" layoutY="55.0" prefHeight="502.0" prefWidth="226.0">
                     <content>
                               <VBox fx:id="usersList" layoutX="10.0" layoutY="7.0" prefHeight="464.0" prefWidth="208.0" />
                     </content>
                   </ScrollPane>
                   <ImageView fx:id="LogedinUserImage" fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="LogedinUserName" layoutX="75.0" layoutY="12.0" prefHeight="37.0" prefWidth="109.0">
-                     <font>
-                        <Font name="Roboto Black" size="14.0" />
-                     </font>
-                  </Label>
+                  <Label fx:id="LogedinUserName" layoutX="70.0" layoutY="-3.0" prefHeight="63.0" prefWidth="146.0" text="Label" />
                </children>
                 </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="101.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="655.0">
                     <children>
-                        <ScrollPane layoutX="8.0" layoutY="55.0" prefHeight="421.0" prefWidth="505.0">
+                        <ScrollPane layoutX="8.0" layoutY="55.0" prefHeight="447.0" prefWidth="536.0">
                             <content>
-                                <VBox fx:id="messageContainer" spacing="5" />
+                                <VBox fx:id="messageContainer" prefHeight="444.0" prefWidth="515.0" spacing="5">
+                           <padding>
+                              <Insets top="4.0" />
+                           </padding>
+                           <children>
+                              <Pane prefHeight="413.0" prefWidth="485.0" />
+                           </children>
+                                </VBox>
                             </content>
                         </ScrollPane>
-                        <TextField fx:id="messageInput" layoutX="62.0" layoutY="487.0" onAction="#onEnterPressed" prefHeight="37.0" prefWidth="400.0" />
+                        <TextField fx:id="messageInput" layoutX="9.0" layoutY="513.0" onAction="#onEnterPressed" prefHeight="37.0" prefWidth="536.0" />
                   <HBox layoutX="8.0" layoutY="2.0" prefHeight="50.0" prefWidth="505.0">
                      <children>
                         <ImageView fx:id="clickedUserImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />

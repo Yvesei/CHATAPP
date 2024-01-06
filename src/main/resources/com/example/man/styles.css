@@ -1,15 +1,16 @@
 .sent {
     -fx-background-color: lightblue;
-    -fx-padding: 5px;
-    -fx-border-radius: 50px;
-    -fx-alignment: center-right;
+    -fx-padding: 10px;
+    -fx-hgrow: always;
+    -fx-background-radius: 50px;
+    -fx-end-margin: 10px;
 }
 
 .received {
     -fx-background-color: white;
-    -fx-padding: 5px;
-    -fx-border-radius: 5px;
-    -fx-alignment: center-left;
+    -fx-padding: 10px;
+    -fx-background-radius: 50px;
+    -fx-start-margin: 10px;
 }
 
 #messageContainer {
@@ -41,7 +42,7 @@
 }
 
 .notification-circle {
-    -fx-fill: dodgerblue;
+    -fx-fill: #1eda38;
     -fx-stroke: black;
 }
 
