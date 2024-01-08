@@ -64,6 +64,7 @@ public class LoginController {
         String enteredUsername = username.getText();
         String enteredPassword = password.getText();
 
+
         Authentification authentification = new Authentification();
         if (authentification.signUpUser(enteredUsername, enteredPassword)) {
             // Afficher un message de succès pour l'inscription
