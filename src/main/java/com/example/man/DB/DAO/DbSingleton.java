@@ -6,7 +6,7 @@ public class DbSingleton {
     static {
        try{
            Class.forName("com.mysql.cj.jdbc.Driver");
-           cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/chatapp","root","");
+           cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/chatappDB","root","");
        }catch (SQLException | ClassNotFoundException e){
            e.printStackTrace( );
        }

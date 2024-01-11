@@ -53,6 +53,9 @@
                            <font>
                               <Font name="Roboto Black" size="14.0" />
                            </font>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
                         </Label>
                      </children>
                   </HBox>

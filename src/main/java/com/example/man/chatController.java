@@ -96,10 +96,12 @@ public class chatController implements MessageCallback {
         userBox.getStyleClass().add("user-box");
 
         // ImageView for user image
-        ImageView userImage = new ImageView(new Image("file:/Users/test/Downloads/bruh.jpeg")); // Replace with the actual image path
+        ImageView userImage = new ImageView(new Image("file:/Users/test/Downloads/bruh.jpeg"));
         userImage.setFitHeight(50.0);
         userImage.setFitWidth(50.0);
         userImage.setPreserveRatio(true);
+
+
 
         // VBox for user details
         VBox userDetails = new VBox();
@@ -143,6 +145,14 @@ public class chatController implements MessageCallback {
     }
 
     private void handleUserClick(String username) {
+
+
+        clickedUserImage.setImage(new Image("file:/Users/test/Downloads/bruh.jpeg"));
+
+        clickedUserImage.setFitHeight(50.0);
+        clickedUserImage.setFitWidth(50.0);
+        clickedUserImage.setPreserveRatio(true);
+
         showNotification(username, false);
         for (client user : availableClients) {
             if (user.getName().equals(username)) {
@@ -158,6 +168,8 @@ public class chatController implements MessageCallback {
     }
 
     private void renderChat(int chatId) {
+
+
         messageContainer.getChildren().clear();
         List<Message> messages = daoMessage.getMessagesByChatId(chatId);
         for (Message message : messages) {
