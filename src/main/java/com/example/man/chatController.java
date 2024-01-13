@@ -80,7 +80,7 @@ public class chatController implements MessageCallback {
 
     public void initializeUserLabels() {
         LogedinUserName.setText(this.client.getName());
-        LogedinUserImage.setImage(new Image("file:/Users/test/Downloads/bruh.jpeg"));
+        LogedinUserImage.setImage(new Image("file:bruh.jpeg"));
         for (com.example.man.DB.DAO.entities.client c : availableClients) {
             if (!c.getName().equals(client.getName())) {
                 HBox userBox = createUserBox(c);
@@ -96,7 +96,7 @@ public class chatController implements MessageCallback {
         userBox.getStyleClass().add("user-box");
 
         // ImageView for user image
-        ImageView userImage = new ImageView(new Image("file:/Users/test/Downloads/bruh.jpeg"));
+        ImageView userImage = new ImageView(new Image("file:bruh.jpeg"));
         userImage.setFitHeight(50.0);
         userImage.setFitWidth(50.0);
         userImage.setPreserveRatio(true);
@@ -147,7 +147,7 @@ public class chatController implements MessageCallback {
     private void handleUserClick(String username) {
 
 
-        clickedUserImage.setImage(new Image("file:/Users/test/Downloads/bruh.jpeg"));
+        clickedUserImage.setImage(new Image("file:bruh.jpeg"));
 
         clickedUserImage.setFitHeight(50.0);
         clickedUserImage.setFitWidth(50.0);
@@ -168,7 +168,6 @@ public class chatController implements MessageCallback {
     }
 
     private void renderChat(int chatId) {
-
 
         messageContainer.getChildren().clear();
         List<Message> messages = daoMessage.getMessagesByChatId(chatId);
